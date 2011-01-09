@@ -1,0 +1,130 @@
+@font-face {
+    font-family: philosopher;
+    src: url(philosopher.ttf);
+}
+
+body {
+    padding: 10px 20px 0 20px;
+    overflow: hidden;
+    margin: 0;
+    font-family: philosopher;
+    font-size: 22px;
+    background-color: #BEF202;
+}
+
+button,
+#status {
+    text-shadow: rgba(255, 255, 255, .5) 0 1px 0;
+    border-radius:  8px;
+    border: 1px solid rgba(255,255,255,0.8);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-left: none;
+    border-right: none;
+    color: hsl(0, 0%, 40%);
+    box-shadow: inset rgba(255,254,255,0.6) 0 1.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, rgba(0,0,0,0.2) 0 .5em 5px;
+}
+
+button {
+    font-weight: bold;
+    padding: 6px 10px 6px 10px;
+    background-color: hsl(0, 0%, 75%);
+}
+
+button:hover {
+    background-color: hsl(0, 0%, 83%);
+    cursor: pointer;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+#controls {
+    width: 100%;
+    padding-bottom: 4px;
+    margin-top: 10px;
+}
+
+/******************************************************************************
+ * Top bar.
+ *****************************************************************************/
+#top {
+    height: 34px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#charsCounter {
+    position: absolute;
+    left: 5px;
+    bottom: 0px;
+    text-shadow: rgba(255, 255, 255, .5) 0 1px 0;
+}
+
+/******************************************************************************
+ * Status.
+ *****************************************************************************/
+#statusCnt {
+    position: relative;
+    height: 140px;
+    padding-bottom: 4px;
+    padding: 0px;
+}
+
+#status {
+    overflow: auto;
+    padding: 5px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 7px;
+    margin: 0;
+    background-color: white;
+}
+
+#status > span { -o-transition: 1s; }
+
+.url { color: #44A8FF; }
+
+.mention { color: #ffa600; }
+
+.hash { color: #519548; }
+
+/*****************************************************************************
+ * Controls.
+ ****************************************************************************/
+#tweet.loading {
+    background-image: url(loader.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+#tweet.loading:hover { background-image: url(loader-light.gif); }
+
+/******************************************************************************
+ * Bottom part.
+ *****************************************************************************/
+#msg {
+    text-align: center;
+    color: #fff; /*#990033;*/
+    font-size: 0.7em;
+    padding: 10px 0 10px 0;
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: -60px;
+    opacity: 0.8;
+    -o-transition: .8s;
+    background-color: #000;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#msg.on {
+    top: 0px;
+}
+
+#msg:hover { cursor: pointer; }

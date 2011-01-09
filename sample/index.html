@@ -1,0 +1,52 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="core.css">
+    <script type="text/javascript" src="../libs/o/o/o.js"></script>
+    <script type="text/javascript" src="../libs/o/io/io.js"></script>
+    <script type="text/javascript" src="../libs/o/utils/utils.js"></script>
+    <script type="text/javascript" src="../libs/o/dom/dom.js"></script>
+    <script type="text/javascript" src="../libs/o/bitly/bitly.js"></script>
+    <script type="text/javascript" src="../libs/twitter-text.js"></script>
+
+    <script type="text/javascript" src="../te.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            function $(id) { return document.getElementById(id); } 
+
+            $('tweet').addEventListener('click', function() {
+                if(O.Dom.hasClass(this, 'loading')) {
+                    O.Dom.removeClass(this, 'loading');
+                }
+                else {
+                    this.style.width = this.offsetWidth + 'px';
+                    this.style.height = this.offsetHeight + 'px';
+                    this.innerHTML = '';
+                    O.Dom.addClass(this, 'loading');
+                    O.Dom.addClass($('msg'), 'on');
+                }
+            }, false);
+
+            $('msg').addEventListener('click', function() {
+                O.Dom.removeClass(this, 'on');
+            }, false);
+
+            var editor = new TweetEditor($('status'), $('charsCounter'));
+        }, false);
+    </script>
+</head>
+<body>
+    <div id="top">
+        <span id="charsCounter">140</span>
+    </div>
+
+    <div id="statusCnt">
+        <div id="status" contenteditable="true"></div>
+    </div>
+
+    <div id="controls">
+        <button id="tweet">Tweet</button>
+    </div>
+
+    <p id="msg">Something went wrong</p>
+</body>
+</html>
