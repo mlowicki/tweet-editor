@@ -135,7 +135,7 @@ TweetEditor.prototype = {
                     secondTokenEl.innerHTML = match[3];
                     O.Dom.insertAfter(secondTokenEl, spacesTokenEl);
 
-                    this._setCaretAtTheEnd(secondTokenEl);
+                    this._setCaretAtTheBeginning(secondTokenEl);
                     this._checkIfSpecialEl(secondTokenEl);
                 }
                 else {
@@ -143,7 +143,22 @@ TweetEditor.prototype = {
                 }
             }
             else {
-                this._checkIfSpecialEl(el);
+                var prev = el.previousSibling,
+                    prevHTML = prev && prev.innerHTML;
+
+                // try to merge with the previous element
+                if(prev && prev.nodeName == 'SPAN' &&
+                        !this._hasBlankEnd(prevHTML)) {
+
+                    prev.innerHTML = prevHTML + el.innerHTML;
+                    el.parentNode.removeChild(el);
+
+                    this._setCaretAt(prev, prevHTML.length);
+                    this._checkIfSpecialEl(prev);
+                }
+                else {
+                    this._checkIfSpecialEl(el);
+                }
             }
         }
         else {
