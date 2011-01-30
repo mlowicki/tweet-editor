@@ -30,7 +30,13 @@
                 O.Dom.removeClass(this, 'on');
             }, false);
 
-            var editor = new TweetEditor($('status'), $('charsCounter'));
+            var editor = new TweetEditor(
+                $('status'),
+                $('charsCounter'),
+                function(url, onSuccess, onFailure) {
+                    onSuccess.fn.call(onSuccess.scope, undefined);
+                }
+            );
         }, false);
     </script>
 </head>

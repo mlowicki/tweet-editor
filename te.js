@@ -9,10 +9,12 @@
  * @constructor
  * @param {Element} statusEl
  * @param {Element} charsCounterEl
+ * @param {Function} onShortenURL
  */
-function TweetEditor(statusEl, charsCounterEl) {
+function TweetEditor(statusEl, charsCounterEl, onShortenURL) {
     this._statusEl = statusEl;
     this._charsCounterEl = charsCounterEl;
+    this._onShortenURL = onShortenURL;
 
     this._init();
 }
@@ -32,6 +34,31 @@ TweetEditor.prototype = {
 
         return newArr;
     },
+    _trim: function(str) {
+        return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    },
+    _addClass: function(el, cls) {
+        if(!this._hasClass(el, cls)) {
+            el.className = el.className + " " + cls;
+        }
+    },
+    _removeClass: function(el, cls) {
+        var regexp = new RegExp("(?:^| )" + cls + "(?:$| )"),
+            classes = el.className.replace(regexp, " ");
+
+        el.className = this._trim(classes);
+    },
+    _hasClass: function(el, cls) {
+        var regexp = new RegExp("(?:^| )" + cls + "(?:$| )");
+
+        if(regexp.exec(el.className)) { return true; }
+
+        return false;
+    },
+    _refreshCharsCounter: function() {
+        this.getCharsCounterEl().innerHTML = TweetEditor.MAX_CHARS -
+                this.getStatusEl().textContent.length;
+    },
     _init: function() {
         var that = this,
             statusEl = this.getStatusEl();
@@ -40,9 +67,48 @@ TweetEditor.prototype = {
             setTimeout(function() {
                 that._parse(e.target);
 
-                that.getCharsCounterEl().innerHTML = TweetEditor.MAX_CHARS -
-                        statusEl.textContent.length;
+                that._refreshCharsCounter();
             }, 0);
+        }, false);
+
+        statusEl.addEventListener('mousedown', function(e) {
+            var tar = e.target;
+
+            if(that._hasClass(tar, 'url')) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if(tar.hasAttribute('short-url')) {
+                    tar.innerHTML = tar.getAttribute('short-url');
+                    tar.removeAttribute('short-url');
+                    tar.removeAttribute('title');
+
+                    that._refreshCharsCounter();
+                    return;
+                }
+
+                that._addClass(tar, 'wait');
+
+                that._onShortenURL(tar.textContent, {
+                    fn: function(shortURL) {
+                        if(shortURL) {
+                            tar.setAttribute('short-url', tar.textContent);
+                            tar.setAttribute('title', tar.textContent);
+
+                            that._removeClass(tar, 'wait');
+                            tar.innerHTML = shortURL;
+                            that._refreshCharsCounter();
+                        }
+                        else {
+                            that._removeClass(tar, 'wait');
+                        }
+                    }
+                },{
+                    fn: function() {
+
+                    }
+                });
+            }
         }, false);
     },
     /**
